@@ -1,10 +1,10 @@
 ###update patient
 
-PUT http://localhost:4000/patients/123e4567-e89b-12d3-a456-426614174000
+PUT http://localhost:4000/patients/223e4567-e89b-12d3-a456-426614174013
 Content-Type: application/json
 
 {
-  "name": "John Doe Kafka Test",
+  "name": "John Doe bhailang",
 "email": "tes555Updated@gmail.com",
   "address": "123 main street22",
   "dateOfBirth": "1995-09-09"

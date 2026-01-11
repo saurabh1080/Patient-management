@@ -6,9 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+//DTO is used for 1)Data hiding from user 2)Performance (Selective Data) Patient Entity mein ek bada Photo blob ya bahut saari internal details hain.
+//
+//Agar tum list of patients mangte ho, toh tum nahi chahoge ki har patient ke saath unki puri history aur photo load ho (heavy memory).
+
 public class PatientRequestDTO {
 
-    @NotBlank
+    @NotBlank // checks 1)Null toh ni 2)Length 0 toh ni 3)sirf khaali spaces to ni. Stronger than @NotNull
     @Size(max = 100, message = "name cannot exceed 100 characters")
     private String name;
 
@@ -23,6 +27,7 @@ public class PatientRequestDTO {
     @NotBlank(message = "Date of birth is required")
     private String dateOfBirth;
 
+    // groups = CreatePatientValidationGroup.class iska mtlb ye bs user create krte waqt validate hoga update krte waqt ni
     @NotBlank(groups = CreatePatientValidationGroup.class, message =
             "Registered date is required")
     private String registeredDate;

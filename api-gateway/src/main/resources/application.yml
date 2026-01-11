@@ -1,0 +1,50 @@
+server:
+  port: 4004
+
+spring:
+  cloud:
+    gateway:
+      routes:
+         #Route for auth-service
+           # http://localhost:4004/auth/login
+             # API GATEWAY -> http://localhost:4005/login
+        - id: auth-service-route
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/auth/**
+          filters:
+          - StripPrefix=1
+
+         #Route for /api/patients/** for patient-service
+        - id: patient-service-route
+          uri: http://patient-service:4000
+          predicates:
+            - Path=/api/patients/**
+          filters:
+            - StripPrefix=1
+            - JwtValidation
+
+        #Route for /api/docs/patients to patient-service v3/api/dpcs
+        - id: api-docs-patient-route
+          uri: http://patient-service:4000
+          predicates:
+            - Path=/api-docs/patients
+          filters:
+            - RewritePath=/api-docs/patients, /v3/api-docs
+
+        - id: api-docs-auth-route
+          uri: http://auth-service:4005
+          predicates:
+           - Path=/api-docs/auth
+          filters:
+           - RewritePath=/api-docs/auth, /v3/api-docs
+
+
+
+
+  ## REST CLIENT-> http://patient-service:4004/api/patients
+  ## API GATEWAY-> http://patient-service:4000/patients
+  ## PATIENT SERVICE(Spring Boot app)-> /patients->Patients Array
+
+
+
